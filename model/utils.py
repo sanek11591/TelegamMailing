@@ -1,3 +1,5 @@
+import datetime
+
 import psycopg2
 
 
@@ -23,3 +25,11 @@ def add_new_user(user_id, role, user_name):
         f"INSERT INTO users (user_id, role, user_name) VALUES ({user_id}, '{role}', '{user_name}')")
     conn.commit()
     conn.close()
+
+
+def date_check(date):
+    try:
+        datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+        return True
+    except ValueError:
+        return False

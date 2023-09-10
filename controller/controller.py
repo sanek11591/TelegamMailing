@@ -22,7 +22,7 @@ class Controller:
                         if await Admin.add_mailing(bot, message.chat.id, message.text) == 0:
                             self.flag_receive_command_messages_user.remove(message.chat.id)
                 elif message.text == 'Удалить рассылку':
-                    await self.bot.send_message(message.chat.id, 'Удаление будет позже')
+                    await Admin.del_mailing(bot, message.chat.id)
                 elif message.text == '/admin':
                     await Admin.admin_keyboard(self.bot, message.chat.id)
                 else:
