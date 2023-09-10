@@ -1,7 +1,4 @@
-from controller import controller
 import psycopg2
-
-from model.admin import Admin
 
 
 def is_admin_check(message):

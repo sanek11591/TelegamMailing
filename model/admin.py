@@ -10,9 +10,9 @@ class Admin:
     @staticmethod
     async def admin_keyboard(bot, chat_id):
         markup = types.ReplyKeyboardMarkup(row_width=2)
-        itembtn1 = types.KeyboardButton('Добавить рассылку')
-        itembtn2 = types.KeyboardButton('Удалить рассылку')
-        markup.add(itembtn1, itembtn2)
+        add_mailing = types.KeyboardButton('Добавить рассылку')
+        delete_mailing = types.KeyboardButton('Удалить рассылку')
+        markup.add(add_mailing, delete_mailing)
         await bot.send_message(chat_id, "Выберите действие:", reply_markup=markup)
 
     @staticmethod
