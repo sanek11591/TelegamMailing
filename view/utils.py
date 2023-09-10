@@ -3,6 +3,7 @@ import time
 from multiprocessing import Process
 from telebot import TeleBot
 import psycopg2
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 bot = TeleBot('6562747970:AAGcckmVkQqbqkBmkAQT4Jw70xe23t9EEg4')
 
@@ -49,8 +50,16 @@ def send_mailing_to_users(task_queue):
         user_ids = connect_to_base(f"SELECT user_id FROM users")
         for user_id in user_ids:
             print(user_id[0])
-            bot.send_message(user_id[0], f"{mail[0]}")
+            bot.send_message(user_id[0], f"{mail[0]}", reply_markup=gen_markup(mail[2]))
         connect_to_base(f"update mailing set status = 'done' where id = {mail[2]}", True)
+
+
+def gen_markup(mail_id):
+    markup = InlineKeyboardMarkup()
+    markup.row_width = 2
+    markup.add(InlineKeyboardButton("Yes", callback_data="cb_yes:"+str(mail_id)),
+               InlineKeyboardButton("No", callback_data="cb_no:"+str(mail_id)))
+    return markup
 
 
 def monitor_overdue():

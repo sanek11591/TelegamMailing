@@ -11,6 +11,21 @@ class Controller:
         thread_of_monitoring_database = Thread(target=view.utils.lister_of_base)
         thread_of_monitoring_database.start()
 
+        @self.bot.callback_query_handler(func=lambda call: True)
+        async def callback_query(call):
+            print()
+            answer, mail_id = call.data.split(':')
+            if answer == "cb_yes":
+                view.utils.connect_to_base(
+                    f"INSERT INTO user_answers (mail_id, user_id, answer) VALUES ('{mail_id}', '{call.from_user.id}', '{answer}')",
+                    True)
+                await bot.answer_callback_query(call.id, "Answer is Yes")
+            elif answer == "cb_no":
+                view.utils.connect_to_base(
+                    f"INSERT INTO user_answers (mail_id, user_id, answer) VALUES ('{mail_id}', '{call.from_user.id}', '{answer}')",
+                    True)
+                await bot.answer_callback_query(call.id, "Answer is No")
+
         @self.bot.message_handler(content_types=['text'])
         async def send_command_to_admin(message):
             if utils.is_admin_check(message):
