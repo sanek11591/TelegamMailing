@@ -12,19 +12,24 @@ def lister_of_base():
     task_queue = multiprocessing.Queue()
     process_collect_records = Process(target=collect_records_from_database, args=(task_queue,))
     process_mailing_to_users = Process(target=send_mailing_to_users, args=(task_queue,))
+    process_monitor_overdue = Process(target=monitor_overdue)
     process_collect_records.start()
     process_mailing_to_users.start()
+    process_monitor_overdue.start()
 
 
-def connect_to_base(request):
+def connect_to_base(request, record=False):
     conn = psycopg2.connect(dbname='habrdb', user='habrpguser',
                             password='pgpwd4habr', host='localhost')
     cursor = conn.cursor()
     cursor.execute(request)
-    records = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return records
+    if record:
+        conn.commit()
+    else:
+        records = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return records
 
 
 def collect_records_from_database(task_queue):
@@ -45,3 +50,16 @@ def send_mailing_to_users(task_queue):
         for user_id in user_ids:
             print(user_id[0])
             bot.send_message(user_id[0], f"{mail[0]}")
+        connect_to_base(f"update mailing set status = 'done' where id = {mail[2]}", True)
+
+
+def monitor_overdue():
+    while True:
+        time.sleep(20)
+        overdue_transactions = connect_to_base(
+            f"select * from mailing where send_time < timezone('utc-3', now())::timestamp(0)")
+        if overdue_transactions:
+            for transaction in overdue_transactions:
+                connect_to_base(
+                    f"update mailing set status = 'overdue' where id = {transaction[0]} and status = 'create'",
+                    True)
