@@ -1,16 +1,9 @@
 import datetime
-
-import psycopg2
+import view.utils
 
 
 def is_admin_check(message):
-    conn = psycopg2.connect(dbname='habrdb', user='habrpguser',
-                            password='pgpwd4habr', host='localhost')
-    cursor = conn.cursor()
-    cursor.execute(f'SELECT user_id, role FROM users WHERE user_id={message.from_user.id}')
-    records = cursor.fetchall()
-    cursor.close()
-    conn.close()
+    records = view.utils.connect_to_base(f'SELECT user_id, role FROM users WHERE user_id={message.from_user.id}')
     if records[0][1] == 'admin':
         return True
     else:
@@ -18,13 +11,8 @@ def is_admin_check(message):
 
 
 def add_new_user(user_id, role, user_name):
-    conn = psycopg2.connect(dbname='habrdb', user='habrpguser',
-                            password='pgpwd4habr', host='localhost')
-    cursor = conn.cursor()
-    cursor.execute(
-        f"INSERT INTO users (user_id, role, user_name) VALUES ({user_id}, '{role}', '{user_name}')")
-    conn.commit()
-    conn.close()
+    view.utils.connect_to_base(
+        f"INSERT INTO users (user_id, role, user_name) VALUES ({user_id}, '{role}', '{user_name}')", True)
 
 
 def date_check(date):
