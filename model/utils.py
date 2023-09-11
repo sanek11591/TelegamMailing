@@ -9,7 +9,6 @@ def is_admin_check(message):
     else:
         return False
 
-
 def add_new_user(user_id, role, user_name):
     view.utils.connect_to_base(
         f"INSERT INTO users (user_id, role, user_name) VALUES ({user_id}, '{role}', '{user_name}')", True)
