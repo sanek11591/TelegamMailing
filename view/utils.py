@@ -57,8 +57,8 @@ def send_mailing_to_users(task_queue):
 def gen_markup(mail_id):
     markup = InlineKeyboardMarkup()
     markup.row_width = 2
-    markup.add(InlineKeyboardButton("Yes", callback_data="cb_yes:"+str(mail_id)),
-               InlineKeyboardButton("No", callback_data="cb_no:"+str(mail_id)))
+    markup.add(InlineKeyboardButton("Да", callback_data="cb_yes:"+str(mail_id)),
+               InlineKeyboardButton("Нет", callback_data="cb_no:"+str(mail_id)))
     return markup
 
 

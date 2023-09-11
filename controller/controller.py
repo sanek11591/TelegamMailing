@@ -13,18 +13,19 @@ class Controller:
 
         @self.bot.callback_query_handler(func=lambda call: True)
         async def callback_query(call):
-            print()
             answer, mail_id = call.data.split(':')
+            await bot.edit_message_reply_markup(call.from_user.id, message_id=call.message.message_id,
+                                                reply_markup=None)
             if answer == "cb_yes":
                 view.utils.connect_to_base(
                     f"INSERT INTO user_answers (mail_id, user_id, answer) VALUES ('{mail_id}', '{call.from_user.id}', '{answer}')",
                     True)
-                await bot.answer_callback_query(call.id, "Answer is Yes")
+                await bot.answer_callback_query(call.id, "Спасибо за ответ. Ваш ответ Да")
             elif answer == "cb_no":
                 view.utils.connect_to_base(
                     f"INSERT INTO user_answers (mail_id, user_id, answer) VALUES ('{mail_id}', '{call.from_user.id}', '{answer}')",
                     True)
-                await bot.answer_callback_query(call.id, "Answer is No")
+                await bot.answer_callback_query(call.id, "Спасибо за ответ. Ваш ответ Нет")
 
         @self.bot.message_handler(content_types=['text'])
         async def send_command_to_admin(message):
