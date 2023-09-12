@@ -1,4 +1,5 @@
 from threading import Thread
+
 import view.utils
 from model import utils
 from model.admin import Admin
@@ -18,12 +19,14 @@ class Controller:
                                                 reply_markup=None)
             if answer == "cb_yes":
                 view.utils.connect_to_base(
-                    f"INSERT INTO user_answers (mail_id, user_id, answer) VALUES ('{mail_id}', '{call.from_user.id}', '{answer}')",
+                    f"INSERT INTO user_answers (mail_id, user_id, answer) VALUES ('{mail_id}', "
+                    f"'{call.from_user.id}', '{answer}')",
                     True)
                 await bot.answer_callback_query(call.id, "Спасибо за ответ. Ваш ответ Да")
             elif answer == "cb_no":
                 view.utils.connect_to_base(
-                    f"INSERT INTO user_answers (mail_id, user_id, answer) VALUES ('{mail_id}', '{call.from_user.id}', '{answer}')",
+                    f"INSERT INTO user_answers (mail_id, user_id, answer) VALUES ('{mail_id}', "
+                    f"'{call.from_user.id}', '{answer}')",
                     True)
                 await bot.answer_callback_query(call.id, "Спасибо за ответ. Ваш ответ Нет")
 

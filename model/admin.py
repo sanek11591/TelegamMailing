@@ -1,4 +1,3 @@
-import psycopg2
 from telebot import types
 
 import model.utils
@@ -40,7 +39,8 @@ class Admin:
         elif stage[chat_id] == 2:
             if model.utils.date_check(message):
                 view.utils.connect_to_base(
-                    f"INSERT INTO mailing (massege, send_time, status) VALUES ('{text[chat_id]}', '{message}', 'create')",
+                    f"INSERT INTO mailing (massege, send_time, status) VALUES ('{text[chat_id]}', '{message}'"
+                    f", 'create')",
                     True)
                 await bot.send_message(chat_id, f"Добавлена рассылка на {message}")
                 del stage[chat_id]
