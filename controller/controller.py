@@ -30,6 +30,10 @@ class Controller:
                     True)
                 await bot.answer_callback_query(call.id, "Спасибо за ответ. Ваш ответ Нет")
 
+        @self.bot.message_handler(commands=['start'])
+        async def send_command_to_user(message):
+            await self.bot.send_message(message.chat.id, 'Вы подписались на рассылку, ждите новых сообщений')
+
         @self.bot.message_handler(content_types=['text'])
         async def send_command_to_admin(message):
             if utils.is_admin_check(message):
