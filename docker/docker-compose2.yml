@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:14.8-alpine3.18
+    environment:
+      POSTGRES_DB: "mailingdb"
+      POSTGRES_USER: "userdb"
+      POSTGRES_PASSWORD: "passwd"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - mailing-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  mailing-data:

@@ -20,8 +20,8 @@ def lister_of_base():
 
 
 def connect_to_base(request, record=False):
-    conn = psycopg2.connect(dbname='habrdb', user='habrpguser',
-                            password='pgpwd4habr', host='localhost')
+    conn = psycopg2.connect(dbname='mailingdb', user='userdb',
+                            password='passwd', host='localhost')
     cursor = conn.cursor()
     cursor.execute(request)
     if record:

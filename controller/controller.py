@@ -1,5 +1,6 @@
 from threading import Thread
 
+import model.utils
 import view.utils
 from model import utils
 from model.admin import Admin
@@ -32,6 +33,7 @@ class Controller:
 
         @self.bot.message_handler(commands=['start'])
         async def send_command_to_user(message):
+            model.utils.add_new_user(message.from_user.id, 'user', message.from_user.first_name)
             await self.bot.send_message(message.chat.id, 'Вы подписались на рассылку, ждите новых сообщений')
 
         @self.bot.message_handler(content_types=['text'])
