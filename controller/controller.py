@@ -33,8 +33,12 @@ class Controller:
 
         @self.bot.message_handler(commands=['start'])
         async def send_command_to_user(message):
-            model.utils.add_new_user(message.from_user.id, 'user', message.from_user.first_name)
-            await self.bot.send_message(message.chat.id, 'Вы подписались на рассылку, ждите новых сообщений')
+            if model.utils.is_user_in_base(message):
+                await self.bot.send_message(message.chat.id,
+                                            'Вы уже подписались ранее на рассылку, ждите новых сообщений')
+            else:
+                model.utils.add_new_user(message.from_user.id, 'user', message.from_user.first_name)
+                await self.bot.send_message(message.chat.id, 'Вы подписались на рассылку, ждите новых сообщений')
 
         @self.bot.message_handler(content_types=['text'])
         async def send_command_to_admin(message):
