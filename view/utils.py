@@ -21,7 +21,7 @@ def lister_of_base():
 
 def connect_to_base(request, record=False):
     conn = psycopg2.connect(dbname='mailingdb', user='userdb',
-                            password='passwd', host='localhost')
+                            password='passwd', host='postgres')
     cursor = conn.cursor()
     cursor.execute(request)
     if record:

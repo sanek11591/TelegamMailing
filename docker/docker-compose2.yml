@@ -12,6 +12,16 @@ services:
       - mailing-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
+  mailing:
+    image: python:latest
+    volumes:
+      - ../model:/app/model
+      - ../view:/app/view
+      - ../controller:/app/controller
+      - ../main.py:/app/main.py
+      - ../requirements.txt:/app/requirements.txt
+    command: sh -c "cd /app && pip install -r requirements.txt && python main.py"
+    depends_on:
+      - postgres
 volumes:
   mailing-data:
